@@ -1,5 +1,6 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
@@ -91,17 +92,41 @@ public class Grid implements Iterable<Cell> {
 
     // TODO: Écrire une version correcte de cette méthode.
     private List<Cell> getNeighbours(int rowIndex, int columnIndex) {
-        return null;
+        List<Cell> list = new ArrayList<Cell>();
+        int x = columnIndex, y = rowIndex ;
+        int column[] ={ x-1, x , x+1 , x+1 , x+1 , x+1 ,x , x-1 ,x-1 } ;
+        int row[]    = { y-1 , y-1 , y-1 , y , y+1 , y+1, y+1, y } ;
+        for (int i = 0 ; i < column.length ; i++){
+            list.add(cells[column[i]][row[i]]);
+        }
+        return list ;
     }
 
     // TODO: Écrire une version correcte de cette méthode.
     private int countAliveNeighbours(int rowIndex, int columnIndex) {
-        return 0;
+        int counter = 0 ;
+        List<Cell> list = this.getNeighbours(rowIndex,columnIndex);
+        for(int i = 0 ; i < list.size(); i++){
+            if(list.get(i).isAlive())
+                counter ++ ;
+        }
+        return counter ;
     }
 
     // TODO: Écrire une version correcte de cette méthode.
     private CellState calculateNextState(int rowIndex, int columnIndex) {
-        return null;
+       if(cells[rowIndex][columnIndex].isAlive()){
+           if(this.countAliveNeighbours(rowIndex,columnIndex) >=3)
+               return CellState.DEAD;
+           else return CellState.ALIVE ;
+       }
+       else {
+           if(this.countAliveNeighbours(rowIndex,columnIndex) >=3)
+               return CellState.ALIVE;
+           else return CellState.DEAD ;
+
+       }
+
     }
 
 
@@ -109,6 +134,11 @@ public class Grid implements Iterable<Cell> {
     // TODO: Écrire une version correcte de cette méthode.
     private CellState[][] calculateNextStates() {
         CellState[][] nextCellState = new CellState[getNumberOfRows()][getNumberOfColumns()];
+        for(int y = 0 ; y < this.getNumberOfRows();y++){
+            for(int x = 0 ; x < this.numberOfColumns ; x++){
+                nextCellState[y][x] = this.calculateNextState(x,y);
+            }
+        }
         return nextCellState;
     }
 
