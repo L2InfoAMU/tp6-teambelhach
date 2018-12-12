@@ -144,7 +144,14 @@ public class Grid implements Iterable<Cell> {
 
     // TODO: Écrire une version correcte de cette méthode.
     private void updateStates(CellState[][] nextState) {
-
+        for(int x = 0 ;  x < getNumberOfColumns() ; x++){
+            for(int y = 0 ; y < getNumberOfRows() ; y++){
+                if(nextState[y][x] == CellState.DEAD)
+                    this.cells[x][y].setState(CellState.DEAD);
+                else
+                    this.cells[x][y].setState(CellState.ALIVE);
+            }
+        }
     }
 
     /**
@@ -181,6 +188,6 @@ public class Grid implements Iterable<Cell> {
      */
     // TODO: Écrire une version correcte de cette méthode.
     void randomGeneration(Random random) {
-
+        
     }
 }
